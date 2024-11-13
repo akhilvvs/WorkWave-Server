@@ -67,7 +67,7 @@ protectedRoutes.post("/workstatus", verifyToken, async (req, res) => {
     if (err.Name === "TokenExpiredError") {
       res.status(401).send("Token expired");
     } else {
-      res.status(500).send("An error occurred");
+      res.status(500).send("An error occurred !");
     }
     console.error(err);
   }
