@@ -11,8 +11,7 @@ mongoose
   });
 
 //Setting schema
-const ProjectSchema = new mongoose.Schema(
-{
+const ProjectSchema = new mongoose.Schema({
   EmpId: {
     type: String,
     required: true,
@@ -20,7 +19,7 @@ const ProjectSchema = new mongoose.Schema(
   ProjectName: {
     type: String,
     required: true,
-  }
+  },
 });
 
 //creating Model

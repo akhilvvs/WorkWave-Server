@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 mongoose
   .connect("mongodb://localhost:27017/mongooseDataBase")
   .then(() => {
-    console.log("connected to Users");
+    console.log("connected to AllUsers");
   })
   .catch((error) => {
     console.log(error.message);
@@ -13,9 +13,9 @@ mongoose
 //Setting schema
 const userSchema = new mongoose.Schema(
   {
-    Name:{
-        type: String
-    }, 
+    Name: {
+      type: String,
+    },
     Email: {
       type: String,
       required: true,
@@ -31,15 +31,19 @@ const userSchema = new mongoose.Schema(
       unique: true,
     },
     userType: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     Password: {
       type: String,
       required: true,
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timeStamp: true }
 );
 
-export const UserModel = mongoose.model("users", userSchema); 
+export const UserModel = mongoose.model("users", userSchema);
