@@ -16,7 +16,7 @@ export const transporter = nodemailer.createTransport({
 export const sendVerificationEmail = async (email, verificationCode) => {
   try {
     const response = await transporter.sendMail({
-      from: '"WorkWave" <akhilesh90123@gmail.com>',
+      from: '"WorkWave" <Email Your want to send mails from>',
       to: email,
       subject: "Verify your Email",
       text: "Enter the code displayed in the app to verify your Email",
