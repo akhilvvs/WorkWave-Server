@@ -25,7 +25,6 @@ const codesSchema = new mongoose.Schema(
     },
     isVerified: { type: Boolean, required: true },
     verificationToken: { type: String },
-    // verificationTokenExpiresAt: { type: Date},
   }
 );
 

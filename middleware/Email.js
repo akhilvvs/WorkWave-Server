@@ -8,8 +8,8 @@ export const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: "akhilesh90123@gmail.com",
-    pass: "pmnr efct yrbc ptzs", //MAKE SURE REMOVE THIS BEFORE UPLOADED TO GIT HUB
+    user: "Your Email",
+    pass: "Your App PassKey", //MAKE SURE REMOVE THIS BEFORE UPLOADED TO GIT HUB
   },
 });
 
@@ -26,7 +26,6 @@ export const sendVerificationEmail = async (email, verificationCode) => {
       ),
     });
     return response
-    // console.log("Email send Successfully", response);
   } catch (error) {
     console.log("Email error", error);
   }

@@ -10,7 +10,6 @@ router.use(express.json());
 
 router.post("/register", async (req, res) => {
   try {
-    console.log(req.body);
     if (!Email || !userType || !EmpId) {
       return res
         .status(400)
@@ -46,18 +45,16 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     let jwtSecretKey = process.env.JWT_SECRET_KEY;
-    // console.log(req.body);
 
     const { User, Password } = req.body;
     const user = await UserModel.findOne({
       $or: [{ Email: User }, { EmpId: User }],
     });
-    // console.log(user);
+
     if (!user) {
       return res.status(400).json({ error: "User Not found", status: 400 });
     }
     const passwordMatch = await bcrypt.compare(Password, user.Password);
-    // console.log(passwordMatch);
     if (!passwordMatch) {
       return res.status(400).json({ error: "Invalid Password", status: 400 });
     }
@@ -69,7 +66,6 @@ router.post("/login", async (req, res) => {
       jwtSecretKey,
       { expiresIn: "20minutes" }
     );
-    // console.log(token);
     res.json({ accessToken: token });
   } catch (error) {
     res.status(500).send({ error: "Internal Server Error" });
@@ -79,7 +75,6 @@ router.post("/login", async (req, res) => {
 router.post("/VerificationCode", async (req, res) => {
   try {
     const Email = req.body.Email;
-    console.log(Email);
     const ExistsUser = await UserModel.findOne({ Email });
     if (ExistsUser) {
       return res
@@ -91,16 +86,14 @@ router.post("/VerificationCode", async (req, res) => {
       100000 + Math.random() * 900000
     ).toString();
 
-    console.log(verificationToken);
-
     const Verification_Code_Email = new EmailCodes({
       Email: Email,
       isVerified: false,
       verificationToken: verificationToken,
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
     });
-    await Verification_Code_Email.save().then((res) => console.log(res));
-    const response = await sendVerificationEmail(Email, verificationToken);
+    await Verification_Code_Email.save()
+    await sendVerificationEmail(Email, verificationToken);
 
     return res
       .status(200)
@@ -116,11 +109,9 @@ router.post("/VerificationCode", async (req, res) => {
 router.post("/VerifyEmail", async (req, res) => {
   try {
     const { code } = req.body;
-    console.log(code);
     const user = await EmailCodes.findOne({
       verificationToken: code,
     });
-    console.log(user, code);
 
     if (!user) {
       return res
@@ -130,9 +121,7 @@ router.post("/VerifyEmail", async (req, res) => {
 
     user.isVerified = true;
     user.verificationToken = undefined;
-    // user.verificationTokenExpiresAt = undefined;
     await user.save().then((res)=>console.log(res))
-    // await senWelcomeEmail(user.Email, user.Name);
     return res
       .status(200)
       .json({ success: true, message: "Email Verified Successfully" });
