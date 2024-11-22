@@ -9,8 +9,6 @@ export const router = express.Router();
 router.use(express.json());
 
 router.post("/register", async (req, res) => {
-  
-  
   try {
     if (!Email || !userType || !EmpId) {
       return res

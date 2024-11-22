@@ -56,7 +56,7 @@ protectedRoutes.post("/workstatus", verifyToken, async (req, res) => {
       };
       const status = new WorkStatus(empStatus);
       await status.save();
-      res.status(200).send("WorkStatus was posted!");
+      res.status(200).send("WorkStatus was posted!!");
     }
   } catch (err) {
     if (err.Name === "TokenExpiredError") {
