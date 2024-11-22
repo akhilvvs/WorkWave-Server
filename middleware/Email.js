@@ -8,15 +8,15 @@ export const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: "akhilesh90123@gmail.com",
-    pass: "pmnr efct yrbc ptzs", //MAKE SURE REMOVE THIS BEFORE UPLOADED TO GIT HUB
+    user: "Your Email",
+    pass: "Your App PassKey", //MAKE SURE REMOVE THIS BEFORE UPLOADED TO GIT HUB
   },
 });
 
 export const sendVerificationEmail = async (email, verificationCode) => {
   try {
     const response = await transporter.sendMail({
-      from: '"WorkWave" <akhilesh90123@gmail.com>',
+      from: '"WorkWave" <Email Your want to send mails from>',
       to: email,
       subject: "Verify your Email",
       text: "Enter the code displayed in the app to verify your Email",
@@ -26,7 +26,6 @@ export const sendVerificationEmail = async (email, verificationCode) => {
       ),
     });
     return response
-    // console.log("Email send Successfully", response);
   } catch (error) {
     console.log("Email error", error);
   }
