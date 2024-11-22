@@ -13,7 +13,7 @@ router.post("/register", async (req, res) => {
     if (!req.body.Email || !req.body.userType || !req.body.EmpId) {
       return res
         .status(400)
-        .json({ success: false, message: "Required felids or not filled !!" });
+        .json({ success: false, message: "Required felids or not filled" });
     }
     const hashed_Password = await bcrypt.hash(req.body.Password, 10);
     const new_user = new UserModel({
