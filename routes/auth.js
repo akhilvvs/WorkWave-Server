@@ -97,7 +97,7 @@ router.post("/VerificationCode", async (req, res) => {
 
     return res
       .status(200)
-      .json({ success: true, message: "Verification code sent" });
+      .json({ success: true, message: "Verification code sent!" });
   } catch (error) {
     console.log(error);
     return res
