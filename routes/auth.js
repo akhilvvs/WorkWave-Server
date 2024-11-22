@@ -10,7 +10,6 @@ router.use(express.json());
 
 router.post("/register", async (req, res) => {
   try {
-    console.log(req.body)
     if (!req.body.Email || !req.body.userType || !req.body.EmpId) {
       return res
         .status(400)
@@ -25,7 +24,6 @@ router.post("/register", async (req, res) => {
       userType: req.body.userType, 
       Password: hashed_Password || null,
     });
-    console.log(new_user)
     await new_user
       .save()
       .then(() => {
