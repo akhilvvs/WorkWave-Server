@@ -10,6 +10,10 @@ mongoose
     console.log(error.message);
   });
 
+const statusSchema = new mongoose.Schema({
+  Today: { type: String, required: true },
+  Tomorrow: { type: String, required: true },
+});
 //Setting schema
 const workStatusSchema = new mongoose.Schema({
   EmpId: {
@@ -25,10 +29,7 @@ const workStatusSchema = new mongoose.Schema({
     required: true,
   },
   Date: { type: String },
-  EmpWorkStatus: {
-    type: String,
-    required: true,
-  },
+  EmpWorkStatus: statusSchema,
 });
 
 //creating Model
