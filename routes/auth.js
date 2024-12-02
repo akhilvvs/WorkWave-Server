@@ -10,7 +10,7 @@ router.use(express.json());
 
 router.post("/register", async (req, res) => {
   try {
-    if (!Email || !userType || !EmpId) {
+    if (!req.body.Email || !req.body.userType || !req.body.EmpId) {
       return res
         .status(400)
         .json({ success: false, message: "Required felids or not filled" });
@@ -21,7 +21,7 @@ router.post("/register", async (req, res) => {
       Email: req.body.Email,
       Phone: req.body.Phone || null,
       EmpId: req.body.EmpId,
-      userType: req.body.userType,
+      userType: req.body.userType, 
       Password: hashed_Password || null,
     });
     await new_user
