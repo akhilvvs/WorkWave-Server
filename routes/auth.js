@@ -17,11 +17,11 @@ router.post("/register", async (req, res) => {
     }
     const hashed_Password = await bcrypt.hash(req.body.Password, 10);
     const new_user = new UserModel({
-      Name: req.body.Name,
+      Name: req.body.Name, 
       Email: req.body.Email,
       Phone: req.body.Phone || null,
       EmpId: req.body.EmpId,
-      userType: req.body.userType, 
+      userType: req.body.userType,
       Password: hashed_Password || null,
     });
     await new_user
@@ -37,7 +37,7 @@ router.post("/register", async (req, res) => {
       });
   } catch (error) {
     res.status(500).send({
-      error: error.message,
+      error: error.message,   
     });
   }
 });
@@ -92,7 +92,7 @@ router.post("/VerificationCode", async (req, res) => {
       verificationToken: verificationToken,
       verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
     });
-    await Verification_Code_Email.save()
+    await Verification_Code_Email.save();
     await sendVerificationEmail(Email, verificationToken);
 
     return res
@@ -121,7 +121,7 @@ router.post("/VerifyEmail", async (req, res) => {
 
     user.isVerified = true;
     user.verificationToken = undefined;
-    await user.save().then((res)=>console.log(res))
+    await user.save();
     return res
       .status(200)
       .json({ success: true, message: "Email Verified Successfully" });

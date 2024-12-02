@@ -1,6 +1,10 @@
 import nodemailer from "nodemailer";
 import { Verification_Email_Template } from "./EmailTemplate.js";
+import dotenv from "dotenv";
 
+dotenv.config();
+
+const Email = process.env.Email_Id;
 const pass = process.env.Email_pass_key;
 
 export const transporter = nodemailer.createTransport({
@@ -8,15 +12,15 @@ export const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: "Your Email",
-    pass: "Your App PassKey", //MAKE SURE REMOVE THIS BEFORE UPLOADED TO GIT HUB
+    user: Email,
+    pass: pass,
   },
 });
 
 export const sendVerificationEmail = async (email, verificationCode) => {
   try {
     const response = await transporter.sendMail({
-      from: '"WorkWave" <Email Your want to send mails from>',
+      from: `WorkWave <${Email}>`,
       to: email,
       subject: "Verify your Email",
       text: "Enter the code displayed in the app to verify your Email",
@@ -25,7 +29,7 @@ export const sendVerificationEmail = async (email, verificationCode) => {
         verificationCode
       ),
     });
-    return response
+    return response;
   } catch (error) {
     console.log("Email error", error);
   }
