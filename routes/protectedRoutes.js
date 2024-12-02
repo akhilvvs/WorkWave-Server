@@ -122,12 +122,9 @@ protectedRoutes.post("/filter", verifyToken, async (req, res) => {
 // Post Projects
 protectedRoutes.post("/Projects", verifyToken, async (req, res) => {
   try {
-    const jwtSecretKey = process.env.JWT_SECRET_KEY;
-    const token = req.headers["authorization"].split(" ")[1];
     const data = req.body;
-    const object = jwt.verify(token, jwtSecretKey);
 
-    if (!data) {
+    if (!data) { 
       return res.status(400).send("Enter Project Details!");
     }
     const ProjectDetails = {
@@ -161,5 +158,42 @@ protectedRoutes.get("/employeeID", verifyToken, async (req, res) => {
       });
   } catch (err) {
     res.status(400).send("Cannot get EMployee ID");
+  }
+});
+
+protectedRoutes.post("/AddEmployee/:EmpId", async (req, res) => {
+  let EmpId = req.params.EmpId;
+  console.log(EmpId);
+  try {
+    if (!req.body.Email || !req.body.EmpId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Required felids or not filled" });
+    }
+    const new_user = new UserModel({
+      Name: req.body.Name,
+      Email: req.body.Email,
+      Phone: "default",
+      EmpId: req.params.EmpId,
+      userType: "Employee",
+      Password: "default",
+    });
+    await new_user
+      .save()
+      .then(() => {
+        res.status(200).send({ message: "Employee Added successfully!" });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json({
+          // error: `${Object.keys(err.errorResponse.keyPattern)} already existed`,
+          status: 400
+        });
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      error: error.message,
+    });
   }
 });
