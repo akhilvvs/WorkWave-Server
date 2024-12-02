@@ -1,5 +1,4 @@
 /* Authorization -->To determine what an authenticated user is allowed to do.After verifying the token aka authentication.*/
-
 import express from "express";
 import { verifyToken } from "../middleware/authMiddleware.mjs";
 import { UserModel } from "../models/user_model.mjs";
@@ -8,10 +7,42 @@ import { ProjectModel } from "../models/project_model.mjs";
 import jwt from "jsonwebtoken";
 
 export const protectedRoutes = express.Router();
+protectedRoutes.use(express.json());
+
+protectedRoutes.get("/LoginUser/:username", verifyToken, async (req, res) => {
+  try {
+    const username = req.params.username;
+    const projection = {
+      Name: 1,
+      Email: 1,
+      EmpId: 1,
+      Phone: 1,
+      userType: 1,
+      _id: 0,
+    };
+    const user = await UserModel.findOne({
+      $or: [{ Email: username }, { EmpId: username }],
+    },projection);
+    if(!user){
+      res.status(400).send("user not found!");
+    }else{
+      res.status(200).send(user);
+    }
+  } catch (err) {
+    res.status(500).send("username not recieved!");
+  }
+});
 
 protectedRoutes.get("/AllUsers", verifyToken, async (req, res) => {
   try {
-    const projection = { Name: 1, Email: 1, EmpId: 1, Phone: 1, _id: 0 };
+    const projection = {
+      Name: 1,
+      Email: 1,
+      EmpId: 1,
+      Phone: 1,
+      userType: 1,
+      _id: 0,
+    };
     const allUsers = await UserModel.find({}, projection);
     res.status(200).send(allUsers);
   } catch (err) {
@@ -29,10 +60,10 @@ protectedRoutes.post("/workstatus", verifyToken, async (req, res) => {
   try {
     const jwtSecretKey = process.env.JWT_SECRET_KEY;
     const token = req.headers["authorization"].split(" ")[1];
-    const data = req.body;
+    const { ProjectName, Today, Tomorrow } = req.body;
     const object = jwt.verify(token, jwtSecretKey);
 
-    if (!data) {
+    if (!req.body) {
       return res.status(400).send("Enter WorkStatus!");
     }
 
@@ -50,13 +81,16 @@ protectedRoutes.post("/workstatus", verifyToken, async (req, res) => {
       const empStatus = {
         EmpId: user.EmpId,
         userType: user.userType,
-        ProjectName: data.ProjectName,
+        ProjectName: ProjectName,
         Date: `${year}-${month}-${day}`,
-        EmpWorkStatus: data.EmpWorkStatus,
+        EmpWorkStatus: {
+          Today: `${Today}`,
+          Tomorrow: `${Tomorrow}`,
+        },
       };
       const status = new WorkStatus(empStatus);
       await status.save();
-      res.status(200).send("WorkStatus was posted!!");
+      res.status(200).send("WorkStatus was posted..");
     }
   } catch (err) {
     if (err.Name === "TokenExpiredError") {
