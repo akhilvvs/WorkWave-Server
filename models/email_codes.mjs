@@ -1,8 +1,13 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const uri = process.env.uri;
 
 // checking connection
 mongoose
-  .connect("mongodb://localhost:27017/mongooseDataBase")
+  .connect(uri)
   .then(() => {
     console.log("connected to VerificationCodes");
   })
@@ -17,7 +22,7 @@ const codesSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
       expires: 7200,//expires in 2hours
-    }, 
+    },
     Email: {
       type: String,
       required: true,
@@ -29,4 +34,3 @@ const codesSchema = new mongoose.Schema(
 );
 
 export const EmailCodes = mongoose.model("Verification_codes", codesSchema);
- 

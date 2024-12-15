@@ -1,8 +1,13 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const uri = process.env.uri;
 
 // checking connection
 mongoose
-  .connect("mongodb://localhost:27017/mongooseDataBase")
+  .connect(uri)
   .then(() => {
     console.log("connected to WorkStatus");
   })
