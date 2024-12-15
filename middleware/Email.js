@@ -9,7 +9,7 @@ const pass = process.env.Email_pass_key;
 
 export const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
+  port: 587, 
   secure: false,
   auth: {
     user: Email,
