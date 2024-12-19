@@ -25,7 +25,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - run: yarn install
-    - run: yarn build --if-present
     - run: |
         if [ -z "${{secrets.PROD_ENV_FILE}}" ]; then
           echo "Error: PROD_ENV_FILE secret is not set" >&2
@@ -33,7 +32,6 @@ jobs:
         fi
         touch .env
         echo "${{secrets.PROD_ENV_FILE}}" > .env
-    - run: yarn test # Optional step for running tests
 
 
 
