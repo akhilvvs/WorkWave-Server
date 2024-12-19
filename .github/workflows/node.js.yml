@@ -11,29 +11,39 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: self-hosted  # Running on a self-hosted runner
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [18.x]  # Node.js version matrix
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3  # Checkout the repository code
+
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v4  # Setup Node.js with caching for Yarn
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - run: yarn install
-    - run: yarn build --if-present
-    - run: |
-        if [ -z "${{secrets.PROD_ENV_FILE}}" ]; then
+
+    - name: Install dependencies
+      run: yarn install  # Install the project dependencies
+
+    - name: Build the project
+      run: yarn build --if-present  # Build the project if applicable
+
+    - name: Setup .env file with PROD_ENV_FILE secret
+      run: |
+        if [ -z "${{ secrets.PROD_ENV_FILE }}" ]; then
           echo "Error: PROD_ENV_FILE secret is not set" >&2
           exit 1
         fi
-        touch .env
-        echo "${{secrets.PROD_ENV_FILE}}" > .env
-    - run: yarn test # Optional step for running tests
+        echo "${{ secrets.PROD_ENV_FILE }}" > .env  # Create .env file with PROD_ENV_FILE secret
+
+    - name: Run tests
+      run: yarn test  # Optional: Run tests if you have test scripts configured
+
 
 
 
