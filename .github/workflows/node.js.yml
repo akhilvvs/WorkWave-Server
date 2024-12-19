@@ -11,25 +11,29 @@ on:
 
 jobs:
   build:
-
     runs-on: self-hosted
 
     strategy:
       matrix:
         node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn' 
-    - run: yarn install 
-    - run: yarn build --if-present 
-    - run : |
-          touch .env
-          echo "${{secrets.PROD_ENV_FILE}}" > .env
+        cache: 'yarn'
+    - run: yarn install
+    - run: yarn build --if-present
+    - run: |
+        if [ -z "${{secrets.PROD_ENV_FILE}}" ]; then
+          echo "Error: PROD_ENV_FILE secret is not set" >&2
+          exit 1
+        fi
+        touch .env
+        echo "${{secrets.PROD_ENV_FILE}}" > .env
+    - run: yarn test # Optional step for running tests
+
 
 
