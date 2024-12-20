@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -25,7 +25,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - run: yarn install --frozen-lockfile    
-     - name: Setup Environment
+    - name: Setup Environment
       run: |
         if [ -z "${{secrets.PROD_ENV_FILE}}" ]; then
           echo "Error: PROD_ENV_FILE secret is not set" >&2
