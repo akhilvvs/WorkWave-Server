@@ -19,7 +19,7 @@ const port = process.env.port;
 app.use("/employee", router);
 app.use("/api", protectedRoutes);
 
-app.get("test",(res,req)=>{
+app.get("/test",(res,req)=>{
   res.send("working")
 })
 
