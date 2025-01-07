@@ -42,6 +42,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.get('get',async(req,res)=>{
+  res.json("Hi there")
+})
 router.post("/login", async (req, res) => {
   try {
     let jwtSecretKey = process.env.JWT_SECRET_KEY;

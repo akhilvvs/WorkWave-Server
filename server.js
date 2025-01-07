@@ -19,10 +19,6 @@ const port = process.env.port;
 app.use("/employee", router);
 app.use("/api", protectedRoutes);
 
-app.get("/test",(res,req)=>{
-  res.send("working")
-})
+app.use("/api/test",(req,res)=>{return res.status(200).json({message:"working"})})
 
-app.listen(port, () => {
-  console.log(`Server is listening on ${port}`);
-});
+app.listen(port, () => {console.log(`Server is listening on ${port}`);});
